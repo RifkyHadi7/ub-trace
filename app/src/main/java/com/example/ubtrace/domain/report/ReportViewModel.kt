@@ -127,5 +127,30 @@ class ReportViewModel: ViewModel() {
             Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
         }
     }
+
+    fun getReportbyId(
+        context: Context,
+        reportId: String,
+        data: (Report) -> Unit,
+    ) = CoroutineScope(Dispatchers.IO).launch {
+        val fireStoreRef = Firebase.firestore
+            .collection("reports")
+            .document(reportId)
+
+        try {
+            fireStoreRef.get()
+                .addOnSuccessListener {
+                    if(it.exists()){
+                        val report = it.toObject<Report>()!!
+                        data(report)
+
+                    } else{
+                        Toast.makeText(context, "No User Data Found", Toast.LENGTH_SHORT).show()
+                    }
+                }
+        } catch (e: Exception) {
+            Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
+        }
+    }
 }
 
