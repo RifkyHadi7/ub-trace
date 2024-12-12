@@ -27,7 +27,7 @@ data class Report(
     val description: String = "",
 
     @SerialName("status")
-    val status: String = "",
+    val status: String = "NotFound",
 
     @SerialName("noTelp")
     val noTelp: String = ""

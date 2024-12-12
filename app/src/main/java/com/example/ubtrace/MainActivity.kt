@@ -17,6 +17,7 @@ import com.example.ubtrace.presentation.Homepage.HomeScreen
 import com.example.ubtrace.presentation.LoginScreen.LoginScreen
 import com.example.ubtrace.presentation.ReportScreen.ReportScreen
 import com.example.ubtrace.presentation.SignInScreen.SignInScreen
+import com.example.ubtrace.presentation.StatusScreen.StatusScreen
 import com.example.ubtrace.presentation.WelcomeScreen.WelcomeScreen
 import com.google.firebase.auth.FirebaseAuth
 
@@ -72,6 +73,9 @@ fun AppNavigation() {
             SignInScreen(navController) {
                 navController.navigate("login")
             }
+        }
+        composable("status") {
+            StatusScreen(navController = navController)
         }
         composable("home") {
             HomeScreen(navController = navController, reportViewModel = reportViewModel)

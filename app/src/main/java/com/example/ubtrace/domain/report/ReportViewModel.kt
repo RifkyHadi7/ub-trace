@@ -6,7 +6,9 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import com.example.ubtrace.data.report.Report
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.toObject
+import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -100,5 +102,30 @@ class ReportViewModel: ViewModel() {
         }
     }
 
+    fun getReportbyUserId(
+        context: Context,
+        userUid: String,
+        status: String,
+        data: (List<Report>) -> Unit,
+    ) = CoroutineScope(Dispatchers.IO).launch {
+        val fireStoreRef = Firebase.firestore
+            .collection("reports")
+            .whereEqualTo("userUid", userUid)
+            .whereEqualTo("status", status)
 
+        try {
+            val reports = withContext(Dispatchers.IO) {
+                val snapshot = fireStoreRef.get().await()
+                snapshot.documents.mapNotNull { it.toObject<Report>() }
+            }
+            data(reports)
+
+            withContext(Dispatchers.Main) {
+                Toast.makeText(context, "Loading Complete", Toast.LENGTH_SHORT).show()
+            }
+        } catch (e: Exception) {
+            Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
+        }
+    }
 }
+
