@@ -39,14 +39,14 @@ import com.example.ubtrace.R
 @Composable
 fun Signincard(
     modifier: Modifier,
-    onSignUp: (String, String, String) -> Unit
+    onSignUp: (String, String, String, String) -> Unit
 )
 {
     var email by remember { mutableStateOf("") }
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-    var confirmPassword by remember { mutableStateOf("")
-    }
+    var confirmPassword by remember { mutableStateOf("") }
+    var noTelp by remember { mutableStateOf("") }
 
         Card (modifier = Modifier
             .fillMaxSize()
@@ -83,6 +83,16 @@ fun Signincard(
                 label = { Text("Nama Pengguna") },
                 modifier = Modifier.fillMaxWidth()
             )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            OutlinedTextField(
+                value = noTelp,
+                onValueChange = { noTelp = it },
+                label = { Text("Nomor Telepon") },
+                modifier = Modifier.fillMaxWidth(),
+            )
+
             Spacer(modifier = Modifier.height(8.dp))
 
             OutlinedTextField(
@@ -123,7 +133,7 @@ fun Signincard(
             Button(
                 onClick = {
                     if (password == confirmPassword) {
-                        onSignUp(email, password, username)
+                        onSignUp(email, password, username, noTelp)
                     } else {
                         // Handle password mismatch error
                     }

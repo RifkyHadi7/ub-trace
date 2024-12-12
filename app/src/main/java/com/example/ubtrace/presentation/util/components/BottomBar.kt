@@ -14,24 +14,24 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.ubtrace.R
 
 data class CustomButton(
     val label : String,
-    val icon : Painter
+    val icon : Painter,
+    val pointer : String
 )
 
 @Composable
-fun Bottombar() {
+fun Bottombar(navController: NavController) {
     var selectedIcon by remember{ mutableIntStateOf(0) }
-
     val items = listOf(
-        CustomButton("Halaman", painterResource(id = R.drawable.homebar)),
-        CustomButton("Peta", painterResource(id = R.drawable.map)),
-        CustomButton("lapor", painterResource(id = R.drawable.lapor)),
-        CustomButton("status", painterResource(id = R.drawable.status))
+        CustomButton("Halaman", painterResource(id = R.drawable.homebar), "home"),
+        CustomButton("Peta", painterResource(id = R.drawable.map), "map"),
+        CustomButton("Lapor", painterResource(id = R.drawable.lapor), "report"),
+        CustomButton("Status", painterResource(id = R.drawable.status), "status")
     )
 
     NavigationBar {
@@ -40,14 +40,17 @@ fun Bottombar() {
                 icon = { Icon(item.icon, modifier = Modifier.size(24.dp), tint = Color.Unspecified, contentDescription = item.label)},
                 label = { Text(item.label) },
                 selected = selectedIcon == index,
-                onClick = { selectedIcon = index }
+                onClick = {
+                    selectedIcon = index
+                    navController.navigate(item.pointer)
+                }
             )
         }
     }
 }
 
-@Composable
-@Preview
-fun preview(){
-    Bottombar()
-}
+//@Composable
+//@Preview
+//fun preview(){
+//    Bottombar()
+//}

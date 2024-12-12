@@ -11,7 +11,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.ubtrace.domain.auth.AuthState
 import com.example.ubtrace.domain.auth.AuthViewModel
@@ -34,8 +33,8 @@ internal fun SignInScreen(
         is AuthState.Idle -> {
             SignInContent(
                 state = SignInViewState(),
-                onSignUp = { email, password, username ->
-                    viewModel.register(email, password, username)
+                onSignUp = { email, password, username, noTelp ->
+                    viewModel.register(email, password, username, noTelp)
                 }
             )
         }
@@ -52,8 +51,8 @@ internal fun SignInScreen(
             val errorMessage = (state as AuthState.Error).errorMessage
             SignInContent(
                 state = SignInViewState(isError = true, errorMessage = errorMessage),
-                onSignUp = { email, password, username ->
-                    viewModel.register(email, password, username)
+                onSignUp = { email, password, username, noTelp ->
+                    viewModel.register(email, password, username, noTelp)
                 }
             )
         }
@@ -63,7 +62,7 @@ internal fun SignInScreen(
 @Composable
 fun SignInContent(
     state: SignInViewState,
-    onSignUp: (String, String, String) -> Unit
+    onSignUp: (String, String, String, String) -> Unit
 ){
     Loading(isLoading = state.isLoading)
 
@@ -89,6 +88,6 @@ fun SignInContent(
 @Preview
 fun preview(){
     SignInContent(state = SignInViewState(),
-        onSignUp = { _, _, _ -> }
+        onSignUp = { _, _, _, _ -> }
     )
 }

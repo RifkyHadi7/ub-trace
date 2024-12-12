@@ -14,11 +14,11 @@ import androidx.compose.ui.unit.dp
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun topAppbarHome(
-    tittle: String
+    title: String
 ){
     TopAppBar(
         title = {
-            Text(text = tittle,
+            Text(text = title,
                 modifier = Modifier.fillMaxWidth().padding(start = 0.dp, end = 14.dp),
                 textAlign = TextAlign.Center)
         }
@@ -28,5 +28,5 @@ fun topAppbarHome(
 @Composable
 @Preview
 fun preview(){
-    topAppbarHome(tittle = "HALAMAN")
+    topAppbarHome(title = "HALAMAN")
 }

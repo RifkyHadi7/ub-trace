@@ -17,7 +17,7 @@ class AuthRepositoryImpl : AuthRepository {
         }
     }
 
-    override suspend fun register(email: String, password: String, username: String): Result<String?> {
+    override suspend fun register(email: String, password: String, username: String, noTelp: String): Result<String?> {
         return try {
             val result = auth.createUserWithEmailAndPassword(email, password).await()
             val userId = result.user?.uid ?: throw Exception("User ID is null")
@@ -26,7 +26,8 @@ class AuthRepositoryImpl : AuthRepository {
             val userMap = mapOf(
                 "userId" to userId,
                 "username" to username,
-                "email" to email
+                "email" to email,
+                "noTelp" to noTelp
             )
             firestore.collection("users").document(userId).set(userMap).await()
 
