@@ -13,14 +13,14 @@ import androidx.compose.ui.graphics.Color
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun topAppbarSign(
-
+    onBackClick: () -> Unit
 ){
     TopAppBar(
         title = {
 
         },
         navigationIcon = {
-            IconButton(onClick = {}) {
+            IconButton(onClick = onBackClick) {
                 Icon(
                     imageVector = Icons.Default.KeyboardArrowLeft,
                     contentDescription = "back"

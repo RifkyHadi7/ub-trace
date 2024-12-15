@@ -24,18 +24,17 @@ internal fun LoginScreen(
     navController: NavController,
     viewModel: AuthViewModel = AuthViewModel(),
     onLoginSuccess: () -> Unit
-){
-    // Collect the auth state from the ViewModel
+) {
     val state by viewModel.authState.collectAsState()
 
-    // Handle state changes
     when (state) {
         is AuthState.Idle -> {
             LoginContent(
                 state = LoginViewState(),
                 onLogin = { email, password ->
                     viewModel.login(email, password)
-                }
+                },
+                onBackClick = { navController.popBackStack() } // Tambahkan aksi kembali
             )
         }
         is AuthState.Loading -> {
@@ -51,22 +50,25 @@ internal fun LoginScreen(
                 state = LoginViewState(isError = true, errorMessage = errorMessage),
                 onLogin = { email, password ->
                     viewModel.login(email, password)
-                }
+                },
+                onBackClick = { navController.popBackStack() } // Tambahkan aksi kembali
             )
         }
     }
 }
 
+
 @Composable
 fun LoginContent(
     state: LoginViewState,
-    onLogin: (String, String)-> Unit
+    onLogin: (String, String)-> Unit,
+    onBackClick: () -> Unit
 ){
     Scaffold (
         containerColor = Color(0xFFFFDE59),
         modifier = Modifier.fillMaxSize(),
         topBar = {
-            topAppbarLogSign()
+            topAppbarLogSign(onBackClick = onBackClick)
         }, content = { paddingValues ->
             Column (
                 modifier = Modifier.padding(paddingValues)
@@ -87,6 +89,7 @@ fun preview(){
     val navController = rememberNavController()
     LoginContent(
         state = LoginViewState(),
-        onLogin = TODO()
+        onLogin = TODO(),
+        onBackClick = TODO()
     )
 }

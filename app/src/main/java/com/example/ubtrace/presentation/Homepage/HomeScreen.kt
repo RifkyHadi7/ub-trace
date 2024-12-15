@@ -18,6 +18,7 @@ import com.example.ubtrace.presentation.Homepage.Components.ItemCard
 import com.example.ubtrace.presentation.Homepage.Components.Loading
 import com.example.ubtrace.presentation.Homepage.Components.topAppbarHome
 import com.example.ubtrace.presentation.util.components.Bottombar
+import com.google.firebase.auth.FirebaseAuth
 
 @Composable
 internal fun HomeScreen(navController: NavController, reportViewModel: ReportViewModel) {
@@ -51,8 +52,17 @@ fun HomeContent(
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
-            topAppbarHome(title = "HALAMAN")
-        },
+            topAppbarHome(
+                title = "HALAMAN",
+                onLogoutClick = {
+                    FirebaseAuth.getInstance().signOut()
+                    navController.navigate("login") {
+                        popUpTo("home") { inclusive = true }
+                    }
+                }
+            )
+        }
+        ,
         content = { paddingValues ->
             LazyColumn(
                 contentPadding = paddingValues,
@@ -61,7 +71,7 @@ fun HomeContent(
                     .padding(paddingValues)
             ) {
                 items(reports) { report ->
-                    ItemCard(report)
+                    ItemCard(report, navController)
                 }
             }
         },

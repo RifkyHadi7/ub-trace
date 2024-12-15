@@ -13,8 +13,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.ubtrace.domain.report.ReportViewModel
 import com.example.ubtrace.domain.user.UserViewModel
+import com.example.ubtrace.presentation.Homepage.Components.ItemDetailScreen
 import com.example.ubtrace.presentation.Homepage.HomeScreen
 import com.example.ubtrace.presentation.LoginScreen.LoginScreen
+import com.example.ubtrace.presentation.MapPage.MapPage
 import com.example.ubtrace.presentation.ReportScreen.ReportScreen
 import com.example.ubtrace.presentation.SignInScreen.SignInScreen
 import com.example.ubtrace.presentation.StatusScreen.StatusScreen
@@ -77,11 +79,18 @@ fun AppNavigation() {
         composable("status") {
             StatusScreen(navController = navController)
         }
+        composable("map") {
+            MapPage(navController = navController, reportViewModel = reportViewModel)
+        }
         composable("home") {
             HomeScreen(navController = navController, reportViewModel = reportViewModel)
         }
         composable("report") {
             ReportScreen(navController = navController, reportViewModel = reportViewModel, userViewModel = userViewModel)
+        }
+        composable("item_detail/{itemId}") { backStackEntry ->
+            val itemId = backStackEntry.arguments?.getString("itemId")
+            ItemDetailScreen(itemId = itemId, navController = navController)
         }
     }
 }

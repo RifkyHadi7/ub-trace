@@ -25,17 +25,16 @@ internal fun SignInScreen(
     viewModel: AuthViewModel = AuthViewModel(),
     onSignUpSuccess: () -> Unit
 ) {
-    // Collect the auth state from the ViewModel
     val state by viewModel.authState.collectAsState()
 
-    // Handle state changes
     when (state) {
         is AuthState.Idle -> {
             SignInContent(
                 state = SignInViewState(),
                 onSignUp = { email, password, username, noTelp ->
                     viewModel.register(email, password, username, noTelp)
-                }
+                },
+                onBackClick = { navController.popBackStack() } // Navigasi kembali
             )
         }
         is AuthState.Loading -> {
@@ -53,16 +52,19 @@ internal fun SignInScreen(
                 state = SignInViewState(isError = true, errorMessage = errorMessage),
                 onSignUp = { email, password, username, noTelp ->
                     viewModel.register(email, password, username, noTelp)
-                }
+                },
+                onBackClick = { navController.popBackStack() } // Navigasi kembali
             )
         }
     }
 }
 
+
 @Composable
 fun SignInContent(
     state: SignInViewState,
-    onSignUp: (String, String, String, String) -> Unit
+    onSignUp: (String, String, String, String) -> Unit,
+    onBackClick: () -> Unit
 ){
     Loading(isLoading = state.isLoading)
 
@@ -70,7 +72,7 @@ fun SignInContent(
         containerColor = Color(0xFF314D51),
         modifier = Modifier.fillMaxSize(),
         topBar = {
-            topAppbarSign()
+            topAppbarSign(onBackClick = onBackClick)
         }, content = {paddingValues ->
             Column (
                 modifier = Modifier.padding(paddingValues)
@@ -88,6 +90,7 @@ fun SignInContent(
 @Preview
 fun preview(){
     SignInContent(state = SignInViewState(),
-        onSignUp = { _, _, _, _ -> }
+        onSignUp = { _, _, _, _ -> },
+        onBackClick = TODO()
     )
 }

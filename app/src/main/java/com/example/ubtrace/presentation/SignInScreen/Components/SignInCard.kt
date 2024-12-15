@@ -40,6 +40,7 @@ import com.example.ubtrace.R
 fun Signincard(
     modifier: Modifier,
     onSignUp: (String, String, String, String) -> Unit
+
 )
 {
     var email by remember { mutableStateOf("") }
